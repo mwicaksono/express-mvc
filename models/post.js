@@ -11,6 +11,30 @@ class Post {
             this.id = new ObjectId(id);
         }
     }
+
+    static async fetchAll() {
+        const posts = await db.getDb().collection('posts').find().toArray();
+        return posts;
+    }
+
+    async fetch() {
+        if (!this.id) {
+            return;
+        }
+        const post = await db.getDb().collection('posts').findOne({ _id: this.id });
+        this.title = post.title;
+        this.content = post.content;
+
+    }
+
+    // static async fetchSinglePost(id) {
+    //     if (!id) {
+    //         return;
+    //     }
+    //     const post = await db.getDb().collection('posts').findOne({ _id: id });
+    //     return post;
+    // }
+
     async save() {
         let result;
         if (this.id) {
@@ -31,17 +55,6 @@ class Post {
         return result;
 
     }
-
-    // async update() {
-    //     const result = await db
-    //         .getDb()
-    //         .collection('posts')
-    //         .updateOne(
-    //             { _id: this.id },
-    //             { $set: { title: this.title, content: this.content } }
-    //         );
-    //     return result;
-    // }
 
     async delete() {
 
