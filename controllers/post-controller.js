@@ -13,7 +13,10 @@ async function getAdmin(req, res) {
 
     const posts = await Post.fetchAll();
 
-    const sessionInputData = validationSession.getSessionErrorData(req);
+    const sessionInputData = validationSession.getSessionErrorData(req, {
+        title: '',
+        content: ''
+    });
 
     res.render('admin', {
         posts: posts,
@@ -58,7 +61,10 @@ async function getSinglePost(req, res) {
         return res.send('404'); // 404.ejs is missing at this point - it will be added later!
     }
 
-    const sessionInputData = validationSession.getSessionErrorData(req);
+    const sessionInputData = validationSession.getSessionErrorData(req, {
+        title: post.title,
+        content: post.content
+    });
 
     res.render('single-post', {
         post: post,
